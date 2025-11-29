@@ -9,11 +9,15 @@ class Settings(BaseSettings):
 
     @property
     def SQLALCHEMY_DATABASE_URL(self) -> str:
-        # چون الان FastAPI بیرون Docker اجرا میشه → localhost
         return (
             f"postgresql+psycopg2://{self.DB_USER}:{self.DB_PASSWORD}"
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         )
+    
+
+    JWT_SECRET_KEY: str = "super-secret-key-change-this"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_HOURS: int = 24
 
     class Config:
         env_file = ".env"   

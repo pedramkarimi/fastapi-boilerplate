@@ -3,3 +3,5 @@ class ErrorMessages:
     USER_NOT_FOUND = "User not found."
     INVALID_CREDENTIALS = "Invalid username or password."
     NO_CHANGES_DETECTED = "No changes detected."
+    INVALID_CREDENTIALS = "Invalid credentials."
+    USER_IS_INACTIVE = "User is inactive;"
