@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Depends
 from .paths import AuthPaths
 from .service import AuthService, get_auth_service
-from .schemas import LoginRequest, TokenResponse, AuthenticatedUser
+from .schemas import LoginRequest, TokenResponse
 from src.core.response import BaseResponse
-from src.api.v1.user.schemas import UserResponse
-from .deps import get_current_user_data
-from src.api.v1.user import models as user_models
-from .guards import AuthGuard
+from src.api.dependencies.guards import AuthGuard
+from src.api.dependencies.models import AuthenticatedUser
 
 router = APIRouter()
 
