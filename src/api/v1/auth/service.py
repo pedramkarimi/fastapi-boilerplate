@@ -24,7 +24,7 @@ class AuthService:
         if not user.is_active:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ErrorMessages.USER_IS_INACTIVE)
         
-        access_token = Security.create_access_token({"sub": str(user.id)})
+        access_token = Security.create_access_token(user)
         token = TokenResponse(access_token=access_token)
         return BaseResponse[TokenResponse](success=True, data=token)
 
