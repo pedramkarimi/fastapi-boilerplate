@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+    # POSGRESQL 
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
     DB_NAME: str = "fastapi_db"
@@ -14,11 +15,23 @@ class Settings(BaseSettings):
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         )
     
-
+    # JWT
     JWT_SECRET_KEY: str = "super-secret-key-change-this"
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_HOURS: int = 24
 
+    # REDIS
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_DB: int = 0
+    REDIS_URL: str = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+
+    # BRUTE FORCE 
+    LOGIN_MAX_ATTEMPTS_PER_EMAIL: int = 5
+    LOGIN_MAX_ATTEMPTS_PER_IP: int = 20
+    LOGIN_ATTEMPT_WINDOW_SECONDS: int = 15 * 60  # پنجره شمارش تلاش‌ها (۱۵ دقیقه)
+    LOGIN_LOCK_TTL_SECONDS: int = 15 * 60        # زمان قفل بودن (۱۵ دقیقه)
+    
     class Config:
         env_file = ".env"   
 
