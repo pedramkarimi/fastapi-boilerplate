@@ -3,7 +3,8 @@ from .paths import AuthPaths
 from .service import AuthService
 from .schemas import LoginRequest, TokenResponse
 from src.core.response import BaseResponse
-from src.api.dependencies.guards import AuthGuard, get_login_attempt_service, login_bruteforce_guard
+from src.api.dependencies.guards.auth_guards import AuthGuard
+from src.api.dependencies.guards.security_guards import get_login_attempt_service, login_bruteforce_guard
 from src.api.dependencies.models import AuthenticatedUser
 from redis.asyncio import Redis
 from src.core.redis import get_redis

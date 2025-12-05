@@ -5,4 +5,5 @@ class ErrorMessages:
     NO_CHANGES_DETECTED = "No changes detected."
     INVALID_CREDENTIALS = "Invalid credentials."
     USER_IS_INACTIVE = "User is inactive."
+    TOO_MANY_FAILED_LOGIN = "Too many failed login attempts. Please try again later."
 
