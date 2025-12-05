@@ -6,6 +6,7 @@ from src.core.redis import get_redis
 from src.core.exceptions import TooManyRequestsException
 from src.api.v1.auth.schemas import LoginRequest
 from src.api.v1.auth.login_attempt_service import LoginAttemptService
+from utils import get_client_ip
 
 def AuthGuard() -> AuthenticatedUser:
     def wrapper(current_user = Depends(get_current_user_data)) -> AuthenticatedUser:
@@ -24,7 +25,7 @@ async def login_bruteforce_guard(
     request: Request,
     attempts: LoginAttemptService = Depends(get_login_attempt_service),
 ) -> None:
-    ip = request.client.host if request.client else "unknown"
+    ip = get_client_ip(request)
     email = credentials.email.lower()
 
     if await attempts.is_locked(email=email, ip=ip):

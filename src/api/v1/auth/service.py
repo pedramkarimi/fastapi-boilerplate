@@ -8,6 +8,7 @@ from src.core.security import Security
 from src.core.exceptions import InvalidCredentialsException, PermissionDeniedException
 from redis.asyncio import Redis
 from .login_attempt_service import LoginAttemptService
+from src.api.dependencies.utils import get_client_ip
 
 class AuthService:
     def __init__(self, db: Session, redis: Redis, attempts: LoginAttemptService):
@@ -17,7 +18,7 @@ class AuthService:
         self.user_repo = UserRepository(db)
 
     async def login(self, request: Request, credentials: LoginRequest) -> BaseResponse[TokenResponse]:
-        ip = request.client.host if request.client else "unknown"
+        ip = get_client_ip(request)
         email = credentials.email.lower()
 
         user = self.user_repo.get_user_by_email(credentials.email)

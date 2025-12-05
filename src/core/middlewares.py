@@ -15,12 +15,9 @@ from .handlers import (
 )
 from .log_models import RequestLog
 from sqlalchemy.exc import SQLAlchemyError
+from src.api.dependencies.utils import get_client_ip
 
 logger = logging.getLogger("app.request")
-
-
-def get_client_ip(request: Request) -> str | None:
-    return request.client.host if request.client else None
 
 async def logging_middleware(request: Request, call_next: Callable) -> Response:
     start_time = time.perf_counter()

@@ -1,5 +1,5 @@
-
 class RedisKeys:
+    # ---- AUTH / SECURITY KEYS ----
     BRUTE_FORCE_EMAIL_ATTEMPTS = "security:bruteforce:email:{email}:attempts"
     BRUTE_FORCE_IP_ATTEMPTS = "security:bruteforce:ip:{ip}:attempts"
     BRUTE_FORCE_EMAIL_LOCK = "security:bruteforce:email:{email}:lock"
@@ -11,6 +11,7 @@ class RedisKeys:
     # TOKEN_BLACK_LIST = "auth:token:blacklist:{jti}"
     # USER_ID_LOCK = "auth:user:{user_id}:lock"
 
+    # ---- AUTH / SECURITY KEYS ----
     @staticmethod
     def brute_force_email_attempts(email: int) -> str:
         return RedisKeys.BRUTE_FORCE_EMAIL_ATTEMPTS.format(email=email)
