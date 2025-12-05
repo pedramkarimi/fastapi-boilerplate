@@ -48,4 +48,5 @@ alembic
 passlib[bcrypt]==1.7.4
 bcrypt==3.2.2
 python-jose==3.5.0
+redis==5.0.2
 
