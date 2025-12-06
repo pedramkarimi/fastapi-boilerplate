@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     LOGIN_MAX_ATTEMPTS_PER_IP: int = 20
     LOGIN_ATTEMPT_WINDOW_SECONDS: int = 15 * 60  # پنجره شمارش تلاش‌ها (۱۵ دقیقه)
     LOGIN_LOCK_TTL_SECONDS: int = 15 * 60        # زمان قفل بودن (۱۵ دقیقه)
+
+    # CORS
+    BACKEND_CORS_ORIGINS : list[str]=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:8000"]
     
     class Config:
         env_file = ".env"   

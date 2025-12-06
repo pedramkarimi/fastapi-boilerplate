@@ -53,7 +53,6 @@ async def logging_middleware(request: Request, call_next: Callable) -> Response:
             error_code = None
 
         error_message = f"{exc.__class__.__name__}: {exc}"
-        error_code = None
         response = await generic_exception_handler(request, exc)
 
     duration_ms = (time.perf_counter() - start_time) * 1000
