@@ -21,4 +21,4 @@ async def login_bruteforce_guard(
     email = credentials.email.lower()
 
     if await attempts.is_locked(email=email, ip=ip):
-        raise TooManyRequestsException(ErrorMessages.TOO_MANY_FAILED_LOGIN)
+        raise TooManyRequestsException(ErrorMessages.TOO_MANY_REQUESTS)

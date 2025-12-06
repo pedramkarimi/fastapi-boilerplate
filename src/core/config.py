@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     LOGIN_ATTEMPT_WINDOW_SECONDS: int = 15 * 60  # پنجره شمارش تلاش‌ها (۱۵ دقیقه)
     LOGIN_LOCK_TTL_SECONDS: int = 15 * 60        # زمان قفل بودن (۱۵ دقیقه)
 
+    # RATE LIMIT
+    RATELIMIT_DEFAULT_MAX_REQUESTS: int = 100
+    RATELIMIT_DEFAULT_WINDOW_SECONDS: int = 60
+
     # CORS
     BACKEND_CORS_ORIGINS : list[str]=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:8000"]
     
