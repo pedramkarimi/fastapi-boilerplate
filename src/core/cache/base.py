@@ -2,7 +2,6 @@ import json
 from typing import Any, Callable, Awaitable
 from redis.asyncio import Redis
 
-
 async def get_or_set(
     redis: Redis,
     key: str,
@@ -15,7 +14,5 @@ async def get_or_set(
         return json.loads(cached_value)
 
     data = await loader()
-
-    await redis.set(key, json.dumps(data, default=str), ex=ttl)
-
+    await redis.set(key, json.dumps(data), ex=ttl)
     return data

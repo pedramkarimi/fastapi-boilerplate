@@ -21,7 +21,7 @@ def get_user_service(
 @router.get(UserPaths.LIST, response_model=PaginationResponse[UserResponse])
 async def users_list(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 10,
     service: UserService = Depends(get_user_service),
 ):
     return await service.users_list(skip=skip, limit=limit)

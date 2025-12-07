@@ -8,9 +8,10 @@ from src.core.errors import ErrorMessages
 from src.core.response import PaginationResponse, BaseResponse
 from src.core.exceptions import ConflictException, ValidationException, NotFoundException
 from src.core.redis_keys import RedisKeys
-from src.core.cache import get_or_set
+from src.core.cache.base import get_or_set
 from src.core.config import settings
 from redis.asyncio import Redis
+from src.core.cache.decorators import cacheable
 
 class UserService:
     def __init__(self, db: Session, redis: Redis):
@@ -19,7 +20,6 @@ class UserService:
         self.user_repo = UserRepository(db)
 
     def user_create(self, user: UserCreate) -> UserResponse:
-
         email_existing = self.user_repo.get_user_by_email(user.email)
         if email_existing:
             raise ConflictException(ErrorMessages.USER_EMAIL_EXISTS)
@@ -31,34 +31,17 @@ class UserService:
         user_response = to_user_response(user)
         return BaseResponse[UserResponse](success=True, data=user_response)
 
+    @cacheable(
+        ttl=settings.CACHED_DATA_TTL,
+        key_builder=lambda self, skip, limit: RedisKeys.users_list(skip, limit),
+        model_cls=PaginationResponse[UserResponse],
+    )
     async def users_list(self, skip: int, limit: int) -> list[UserResponse]:
-        key = RedisKeys.users_list(skip=skip, limit=limit)
-
-        async def load_data():
             users = await self.user_repo.users_list(skip=skip, limit=limit)
             total = await self.user_repo.users_count()
             items = [to_user_response(u) for u in users]
-            # return PaginationResponse[UserResponse](total=total, items=items)
-            response = PaginationResponse[UserResponse](
-                total=total,
-                items=items,
-            )
-
-            # ⚠ به کش همیشه dict بده
-            return response.model_dump()
+            return PaginationResponse[UserResponse](total=total, items=items)
         
-        cached_dict = await get_or_set(
-            redis=self.redis,
-            key=key,
-            ttl=settings.CACHED_DATA_TTL,
-            loader=load_data,
-        )
-
-        # از dict دوباره مدل بسازیم
-        return PaginationResponse[UserResponse](**cached_dict)
-        # cached_data = await get_or_set(redis=self.redis, key=key, ttl=settings.CACHED_DATA_TTL, loader=load_data)
-        # return cached_data
-
     def user_update(self, user_id: int, user: dict) -> BaseResponse[UserResponse]:
         if (user.password is None and user.first_name is None and user.last_name is None):
             raise ValidationException(detail=ErrorMessages.NO_CHANGES_DETECTED)
