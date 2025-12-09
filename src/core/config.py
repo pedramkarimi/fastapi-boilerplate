@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     REDIS_DB: int = 0
     REDIS_URL: str = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 
-    # REDIS KEY 
+    # REDIS KEY CONFIG
     LOGIN_MAX_ATTEMPTS_PER_EMAIL: int = 5
     LOGIN_MAX_ATTEMPTS_PER_IP: int = 20
     LOGIN_ATTEMPT_WINDOW_SECONDS: int = 15 * 60  # پنجره شمارش تلاش‌ها (۱۵ دقیقه)
@@ -34,6 +34,15 @@ class Settings(BaseSettings):
     RATELIMIT_DEFAULT_MAX_REQUESTS: int = 100
     RATELIMIT_DEFAULT_WINDOW_SECONDS: int = 60
     CACHED_DATA_TTL: int = 60
+
+
+    # RABBITMQ
+    RABBITMQ_HOST: str = "localhost"
+    RABBITMQ_PORT: int = 5672
+    RABBITMQ_USER: str = "fastapi_user"
+    RABBITMQ_PASSWORD: str = "fastapi_pass"
+    WELCOME_EMAIL_QUEUE: str = "email.welcome"
+
 
     # CORS
     BACKEND_CORS_ORIGINS : list[str]=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:8000"]

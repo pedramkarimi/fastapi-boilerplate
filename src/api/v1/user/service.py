@@ -12,6 +12,8 @@ from src.core.cache.base import get_or_set
 from src.core.config import settings
 from redis.asyncio import Redis
 from src.core.cache.decorators import cacheable
+from src.messaging.rabbitmq.publishers import publish_welcome_email
+from src.messaging.rabbitmq.schemas import WelcomeEmailMessage
 
 class UserService:
     def __init__(self, db: Session, redis: Redis):
@@ -26,9 +28,12 @@ class UserService:
 
         password_hash = Security.hash_password(user.password)
 
-        user = self.user_repo.user_create(user=user, password_hash=password_hash)
+        new_user = self.user_repo.user_create(user=user, password_hash=password_hash)
 
-        user_response = to_user_response(user)
+        payload : WelcomeEmailMessage = WelcomeEmailMessage(user_id=new_user.id,email=new_user.email,name=new_user.name)
+        publish_welcome_email(payload)
+
+        user_response = to_user_response(new_user)
         return BaseResponse[UserResponse](success=True, data=user_response)
 
     @cacheable(

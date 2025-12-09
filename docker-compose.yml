@@ -34,6 +34,17 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         restart: unless-stopped
 
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672" # پورت اصلی AMQP برای ارتباط برنامه‌ها
+            - "15672:15672" # پورت پنل وب مدیریت
+        environment:
+            RABBITMQ_DEFAULT_USER: fastapi_user
+            RABBITMQ_DEFAULT_PASS: fastapi_pass
+        restart: unless-stopped
+
 volumes:
     postgres_data:
     redis-data:
